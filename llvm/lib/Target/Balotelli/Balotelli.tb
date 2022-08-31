@@ -1,0 +1,15 @@
+include "llvm/Target/Target.td"
+
+
+//define feature
+def FeatureRV32 : SubtargetFeature<"RV32", "HasRV32", "true", "Implements RV32">;
+def FeatureRV64 : SubtargetFeature<"RV64", "HasRV64", "true", "Implements RV64">;
+
+//define feature set
+def FeatureBalotelliRV_I : SubtargetFeature<"BalotelliRV_I", "BalotelliArchVersion",
+					   "BalotelliRV_I", "BalotelliRV_I ISA Support",
+					   [FeatureRV32, FeatureRV64]>;
+
+
+
+
