@@ -1,15 +1,42 @@
+/*
+ * @Author: 22040240-Zhou Kai 1204617231@qq.com
+ * @Date: 2022-08-31 19:18:00
+ * @LastEditors: 22040240-Zhou Kai 1204617231@qq.com
+ * @LastEditTime: 2022-08-31 19:30:16
+ * @FilePath: /llvm/lib/Target/Balotelli/Balotelli.tb
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 include "llvm/Target/Target.td"
 
 
 //define feature
-def FeatureRV32 : SubtargetFeature<"RV32", "HasRV32", "true", "Implements RV32">;
-def FeatureRV64 : SubtargetFeature<"RV64", "HasRV64", "true", "Implements RV64">;
+def FeatureRV32_I : SubtargetFeature<"RV32_I", "HasRV32_I", "true", "Implements RV32_I">;
+
+def FeatureRV64_I : SubtargetFeature<"RV64_I", "HasRV64_I", "true", "Implements RV64_I">;
+
+def FeatureRV32_M : SubtargetFeature<"RV32_M", "HasRV32_M", "true", "Implements RV32_M">;
+
+def FeatureRV64_M : SubtargetFeature<"RV64_M", "HasRV64_M", "true", "Implements RV64_M">;
 
 //define feature set
 def FeatureBalotelliRV_I : SubtargetFeature<"BalotelliRV_I", "BalotelliArchVersion",
-					   "BalotelliRV_I", "BalotelliRV_I ISA Support",
-					   [FeatureRV32, FeatureRV64]>;
+					   	   "BalotelliRV_I", "BalotelliRV_I ISA Support",
+					   	   [FeatureRV32_I, FeatureRV64_I]>;
+					   
+def FeatureBalotelliRV_M : SubtargetFeature<"BalotelliRV_M", "BalotelliArchVersion",
+					   	   "BalotelliRV_M", "BalotelliRV_M ISA Support", 
+					   	   [FeatureRV32_M, FeatureRV64_M]>;					   
 
 
 
+//define processor
+def : Processor<"BalotelliRV_I", BalotelliGenericItineraries, 
+	  [FeatureBalotelliRV_I, FeatureBalotelliRV_M]>;
 
+def : Processor<"BalotelliRV_IM", BalotelliGenericItineraries, 
+	  [FeatureBalotelliRV_I, FeatureBalotelliRV_M]>;
+
+//def InstrInfo
+def Balotelli : Target {
+	let InstructionSet = BalotelliInstrInfo;
+}
